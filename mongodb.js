@@ -14,15 +14,19 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: 
 
     const db = client.db(databaseName);
 
-    db.collection('users').insertOne({
-        name: 'Sankalp',
-        age: 21
-    }, (error, result) => {
-        if (error) {
-            return console.log('Unable to insert user.');
+    db.collection('users').insertMany([
+        {
+            name: 'Shubham',
+            age: 22
+        }, {
+            name: 'Sarfaraz',
+            age: 22
         }
+    ], (error, result) => {
+        if (error) {
+            return console.log('Unable to insert documents.');
+        } 
 
         console.log(result.ops);
     });
-
 });

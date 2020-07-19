@@ -27,6 +27,20 @@ const User = mongoose.model('User', {
             }
         }
     },
+    password: {
+        type: String,
+        required: true,
+        trim: true,
+        validate(value) {
+            if (value.length <= 6) {
+                throw new Error('The length of password must be greater than 6.');
+            }
+
+            if (value.toLowercase().includes('password')) {
+                throw new Error('The password must not contain "password" keyword');
+            } 
+        }
+    },
     age: {
         type: Number,
         default: 0,
@@ -51,7 +65,8 @@ const Task = mongoose.model('Task', {
 
 const me = new User({
     name: '        Sankalp                        ',
-    email: 'MIKE@MEAD.IO       '
+    email: 'MIKE@MEAD.IO       ',
+    password: '#1234as'
 });
 
 me.save().then(() => {

@@ -14,15 +14,17 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: 
 
     const db = client.db(databaseName);
 
-    db.collection('users').findOne({ _id: new ObjectID("5f131257eab371273bde68c4") }, (errro, user) => {
-        if (error) {
-            return console.log('Unable to fetch the user');
-        } 
-
-        console.log(user);
+    const updatePromise = db.collection('users').updateOne({
+        _id: new ObjectID("5f0b1b612d0d87741fd2663c")
+    }, {
+        $set: {
+            name: 'Mike'
+        }
     });
 
-    db.collection('tasks').find({ completed: false }).toArray((error, tasks) => {
-        console.log(tasks);
+    updatePromise.then((result) => {
+        console.log(result);
+    }).catch((error) => {
+        console.log(error);
     });
 });

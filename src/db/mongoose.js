@@ -1,6 +1,7 @@
 'use strict'
 
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api', {
     useNewUrlParser: true,
@@ -11,30 +12,50 @@ mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api', {
 // creating the model
 const User = mongoose.model('User', {
     name: {
-        type: String
+        type: String,
+        trim: true,
+        required: true
     }, 
+    email: {
+        type: String,
+        required: true,
+        trim: true,
+        lowercase: true,
+        validate(value) {
+            if (validator.isEmail(value) === false) {
+                throw new Error('Email is invalid');
+            }
+        }
+    },
     age: {
-        type: Number
+        type: Number,
+        default: 0,
+        validate(value) {
+            if (value < 0) {
+                throw new Error('Age must be a positive number.');
+            }
+        }
     }
 });
+
 
 // creating the task model
 const Task = mongoose.model('Task', {
     description: {
-        type: String
+        type: String,
     }, 
     completed: {
         type: Boolean
     }
 });
 
-const workout = new Task({
-    description: 'Do some exercise.',
-    completed: true
+const me = new User({
+    name: '        Sankalp                        ',
+    email: 'MIKE@MEAD.IO       '
 });
 
-workout.save().then(() => {
-    console.log(workout);
-}).catch(() => {
-    console.log('Error: ', error);
+me.save().then(() => {
+    console.log(me);
+}).catch((error) => {
+    console.log(error);
 });

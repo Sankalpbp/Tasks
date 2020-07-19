@@ -14,11 +14,11 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: 
 
     const db = client.db(databaseName);
 
-    db.collection('users').updateOne({
-        _id: new ObjectID("5f0b1b612d0d87741fd2663c")
+    db.collection('tasks').updateMany({
+        completed: false
     }, {
-        $inc: {
-            age: 1
+        $set: {
+            completed: true
         }
     }).then((result) => {
         console.log(result);

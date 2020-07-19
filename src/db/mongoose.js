@@ -18,15 +18,23 @@ const User = mongoose.model('User', {
     }
 });
 
-// creating an instance of the model
-const me = new User({
-    name: 'Sankalp',
-    age: 21
+// creating the task model
+const Task = mongoose.model('Task', {
+    description: {
+        type: String
+    }, 
+    completed: {
+        type: Boolean
+    }
 });
 
-// saving the object so created into database, and here Mongoose will map the object to a document
-me.save().then(() => {
-    console.log(me);
-}).catch((error) => {
-    console.log(error);
+const workout = new Task({
+    description: 'Do some exercise.',
+    completed: true
+});
+
+workout.save().then(() => {
+    console.log(workout);
+}).catch(() => {
+    console.log('Error: ', error);
 });

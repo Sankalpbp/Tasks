@@ -57,20 +57,22 @@ const User = mongoose.model('User', {
 const Task = mongoose.model('Task', {
     description: {
         type: String,
+        required: true,
+        trim: true
     }, 
     completed: {
-        type: Boolean
+        type: Boolean,
+        required: false,
+        default: false
     }
 });
 
-const me = new User({
-    name: '        Sankalp                        ',
-    email: 'MIKE@MEAD.IO       ',
-    password: '#1234as'
+const task = new Task({
+    description: 'Complete this video'
 });
 
-me.save().then(() => {
-    console.log(me);
+task.save().then(() => {
+    console.log(task);
 }).catch((error) => {
     console.log(error);
 });

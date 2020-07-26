@@ -22,20 +22,23 @@ router.post('/tasks', authentication, async (req, res) => {
 });
 
 // GET /tasks?completed=true
+// GET /tasks?limit=10&skip=10
 router.get('/tasks', authentication, async (req, res) => {
 
     const match = {};
 
-    if (req.query.completed === 'true') {
-        match.completed = true;
-    } else {
-        match.completed = false;
+    if (req.query.completed) {
+        match.completed = (req.query.completed === 'true');
     }
 
     try {
         await req.user.populate({
             path: 'tasks',
-            match
+            match,
+            options: {
+                limit: parseInt(req.query.limit),
+                skip: parseInt(req.query.skip)
+            }
         }).execPopulate();
         res.send(req.user.tasks);
     } catch (e) {
